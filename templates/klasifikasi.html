@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% set active_page = "klasifikasi" %}
+
+{% block title %}SISKLASILA - Klasifikasi{% endblock %}
+
+{% block content %}
+<div class="header">
+  <div>
+    <h1><i data-lucide="shell" class="header-icon"></i> Sistem Klasifikasi Spesies Siput Laut</h1>
+    <p>Upload gambar untuk mendapatkan hasil klasifikasi.</p>
+  </div>
+  <div class="header-right">
+    <span class="date-badge" id="today-date"></span>
+  </div>
+</div>
+
+<div class="grid-2">
+
+  <!-- Input Gambar -->
+  <div class="card">
+    <div class="card-title">Input Gambar</div>
+
+    <div class="upload-area" id="uploadArea">
+      <input type="file" id="fileInput" accept="image/*" />
+      <div class="upload-icon"><i data-lucide="upload-cloud"></i></div>
+      <div class="upload-text">Klik atau drag & drop gambar</div>
+      <div class="upload-hint">PNG, JPG, JPEG · maks. 10MB</div>
+    </div>
+
+    <div class="preview-wrap" id="previewWrap">
+      <img id="previewImg" src="" alt="Preview" />
+      <div class="preview-meta" id="previewMeta"></div>
+      <div id="pesanDitolak" style="display:none; margin-top:0.75rem; padding:0.75rem 1rem;
+        background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2);
+        border-radius:10px; font-size:0.85rem; color:#f87171; text-align:center;">
+      <i data-lucide="alert-circle" class="inline-icon"></i> Gambar tidak dikenali. Coba unggah foto lain.
+    </div>
+      <button class="btn-reset" id="btnReset"><i data-lucide="x" class="inline-icon"></i> Hapus gambar</button>
+    </div>
+    
+
+    <button class="btn-classify" id="btnClassify" disabled>
+      <i data-lucide="zap" class="inline-icon"></i> Klasifikasi Sekarang
+    </button>
+  </div>
+
+  <!-- Hasil Klasifikasi -->
+  <div class="card">
+    <div class="card-title">Hasil Klasifikasi</div>
+
+    <div class="result-placeholder" id="resultPlaceholder">
+      <div class="ph-icon"><i data-lucide="image"></i></div>
+      <p>Hasil prediksi akan muncul di sini</p>
+    </div>
+
+    <div class="spinner" id="spinner"></div>
+
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-img-wrap">
+        <img id="resultImg" src="" alt="Result" />
+        <span class="result-img-label" id="resultImgLabel">inference</span>
+      </div>
+      <div class="top-pred" id="topPred">
+        <span class="top-pred-label" id="topLabel">—</span>
+        <span class="top-pred-conf" id="topConf">—</span>
+      </div>
+      <div class="prob-list" id="probList"></div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/klasifikasi.js') }}"></script>
+{% endblock %}

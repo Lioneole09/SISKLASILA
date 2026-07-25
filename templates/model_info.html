@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% set active_page = "model_info" %}
+
+{% block title %}SISKLASILA — Model info{% endblock %}
+
+{% block content %}
+<div class="header">
+  <div>
+    <h1><i data-lucide="bar-chart-3" class="header-icon"></i> Informasi Model</h1>
+    <p>Detail dan performa model yang digunakan dalam sistem klasifikasi.</p>
+  </div>
+  <div class="header-right">
+    <span class="date-badge" id="today-date"></span>
+  </div>
+</div>
+
+<div id="tab-klasifikasi" class="tab-pane active">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Informasi Model</div>
+      <div class="info-row"><span class="info-label">Nama Model</span><span class="info-val">{{ klasifikasi.nama_model }}</span></div>
+      <div class="info-row"><span class="info-label">Framework</span><span class="info-val">{{ klasifikasi.framework }}</span></div>
+      <div class="info-row"><span class="info-label">Input Size</span><span class="info-val">{{ klasifikasi.input_size }}</span></div>
+      <div class="info-row"><span class="info-label">Total Parameter</span><span class="info-val">{{ klasifikasi.total_params }}<span> / </span>{{ klasifikasi.trainable }}</span></div>
+      <div class="info-row"><span class="info-label">Jumlah Kelas</span><span class="info-val">{{ klasifikasi.jumlah_kelas }} kelas</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Best Epoch</div>
+        <div class="info-row"><span class="info-label">Epoch</span><span class="info-val">{{ klasifikasi.best_epoch.epoch }}</span></div>
+        <div class="info-row"><span class="info-label">Train Accuracy</span><span class="info-val">{{ (klasifikasi.best_epoch.train_accuracy * 100)|round(2) }}%</span></div>
+        <div class="info-row"><span class="info-label">Train Loss</span><span class="info-val">{{ klasifikasi.best_epoch.train_loss }}</span></div>
+        <div class="info-row"><span class="info-label">Val Accuracy</span><span class="info-val">{{ (klasifikasi.best_epoch.val_accuracy * 100)|round(2) }}%</span></div>
+        <div class="info-row"><span class="info-label">Val Loss</span><span class="info-val">{{ klasifikasi.best_epoch.val_loss }}</span></div>
+    </div>
+  </div>
+
+  <!-- Grafik Training -->
+  <div class="card" style="margin-top:1.25rem">
+    <div class="card-title">Grafik Training</div>
+    <img src="{{ url_for('static', filename='img/accuracyLoss_training.png') }}"
+         style="width:100%; border-radius:8px; border:1px solid var(--border);">
+  </div>
+
+  <div class="grid-2" style="margin-top:1.25rem;gap:1.25rem">
+    <div class="card">
+      <div class="card-title">Kelas yang Dikenali</div>
+      {% for kelas in klasifikasi.kelas %}
+      <div class="info-row">
+        <span class="info-label">Kelas {{ loop.index }}</span>
+        <span class="info-val">{{ kelas }}</span>
+      </div>
+      {% endfor %}
+      <br>
+      <img src="{{ url_for('static', filename='img/confusionMatrix_klasifikasi.png') }}"
+         style="width:100%; max-width:500px; display:block; margin:auto; border-radius:8px; border:1px solid var(--border);">
+ 
+    </div>
+    <div class="card">
+      <div class="card-title">Performa Model</div>
+      <div class="info-row"><span class="info-label">Accuracy</span><span class="info-val">{{ (klasifikasi.accuracy * 100)|round(2) }}%</span></div>
+      {% for nama, val in klasifikasi.classes.items() %}
+      <div style="margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid var(--border);font-size:0.75rem;color:var(--text-faint);font-family:'JetBrains Mono',monospace;">{{ nama }}</div>
+      <div class="info-row"><span class="info-label">Precision</span><span class="info-val">{{ (val.precision * 100)|round(2) }}%</span></div>
+      <div class="info-row"><span class="info-label">Recall</span><span class="info-val">{{ (val.recall * 100)|round(2) }}%</span></div>
+      <div class="info-row"><span class="info-label">F1-Score</span><span class="info-val">{{ (val.f1 * 100)|round(2) }}%</span></div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}SISKLASILA{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+  <!-- Toggle Sidebar -->
+  <button class="toggle-btn" id="toggleBtn" aria-label="Toggle sidebar">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo"><i data-lucide="shell"></i></div>
+      <span class="brand-name">SISKLASILA</span>
+    </div>
+    <div class="nav-section">Menu</div>
+    <a href="{{ url_for('klasifikasi') }}"
+       class="nav-item {% if active_page == 'klasifikasi' %}active{% endif %}">
+      <span class="icon"><i data-lucide="scan-search"></i></span><span class="label">Klasifikasi</span>
+    </a>
+    <a href="{{ url_for('model_info') }}"
+       class="nav-item {% if active_page == 'model_info' %}active{% endif %}">
+      <span class="icon"><i data-lucide="bar-chart-3"></i></span><span class="label">Model Info</span>
+    </a>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main" id="mainContent">
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>
